@@ -4,15 +4,94 @@
 <head>
   <!-- Shaka Player compiled library: -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.0.4/shaka-player.compiled.js"></script>
-  <!-- Your application source: -->
-  <script src="shaka.js"></script>
-  <!-- <script src="demo.js"></script> -->
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 60px;
+      padding: 0 20vw;
+    }
+
+    .media {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .media video {
+      width: 100%;
+    }
+
+  </style>
 </head>
 
 <body>
-  <input type="text" id="token" />
-  <button onclick="play()">Play</button>
-  <video id="video" width="640" controls autoplay muted></video>
+  <div class="container">
+    <h2>Sigma MultiDRM</h2>
+    <div class="media">
+      <video id="video" controls autoplay muted></video>
+      <br />
+      <button onclick="play()">Play</button>
+    </div>
+  </div>
+
+  <script>
+    const getBrowserName = (userAgent) => {
+      let browserName;
+
+      if (userAgent.indexOf('OPR/') !== -1) {
+        browserName = 'Opera';
+      } else if (userAgent.indexOf('Opera') !== -1) {
+        browserName = 'Opera';
+      } else if (userAgent.indexOf('MSIE') !== -1) {
+        browserName = 'IE';
+      } else if (
+        userAgent.indexOf('Edge') !== -1 ||
+        userAgent.indexOf('Edg') !== -1
+      ) {
+        browserName = 'Microsoft Edge';
+      } else if (userAgent.indexOf('coc_coc_browser') !== -1) {
+        browserName = 'Cốc Cốc';
+      } else if (userAgent.indexOf('Chrome') !== -1) {
+        browserName = 'Chrome';
+      } else if (userAgent.indexOf('Safari') !== -1) {
+        browserName = 'Safari';
+      } else if (userAgent.indexOf('Firefox') !== -1) {
+        browserName = 'Firefox';
+      }
+
+      return browserName;
+    };
+
+    const loadJS = function (url, implementationCode, location) {
+      const scriptTag = document.createElement('script');
+      scriptTag.src = url;
+
+      scriptTag.onload = implementationCode;
+      scriptTag.onreadystatechange = implementationCode;
+
+      location.appendChild(scriptTag);
+    };
+
+    const yourCodeToBeCalled = function () {
+      //your code goes here
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const browserName = getBrowserName(navigator.userAgent);
+      if (browserName === 'Safari') {
+        loadJS('fairplay.js', yourCodeToBeCalled, document.body);
+      } else {
+        loadJS('shaka.js', yourCodeToBeCalled, document.body);
+      }
+    });
+  </script>
+
 </body>
 
 </html>
